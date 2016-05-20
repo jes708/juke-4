@@ -35,6 +35,7 @@ router.get('/:playlistId', function (req, res) {
 });
 
 router.put('/:playlistId', function (req, res, next) {
+  console.log(req.body)
   req.playlist.update(req.body)
   .then(playlist => res.status(200).json(playlist))
   .catch(next);

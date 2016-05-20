@@ -6,7 +6,6 @@ juke.factory('SongFactory', function () {
     convert: function (song) {
       song.audioUrl = '/api/songs/' + song.id + '/audio';
       return song;
-    }
-  };
-
+    } 
+  }
 });

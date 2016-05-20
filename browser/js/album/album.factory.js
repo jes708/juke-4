@@ -1,14 +1,20 @@
 'use strict';
 
-juke.factory('AlbumFactory', function ($http, SongFactory) {
+juke.factory('AlbumFactory', function ($http, SongFactory, $q, $log) {
 
   var AlbumFactory = {};
 
   AlbumFactory.fetchAll = function () {
-    return $http.get('/api/albums')
-    .then(function (response) { return response.data; })
-    .then(function (albums) { return albums.map(AlbumFactory.convert); });
-  };
+      return $http.get('/api/albums')
+      .then(function (response) { return response.data; })
+      .then(function (albums) {
+        return $q.all(albums.map(function(album) {
+          return AlbumFactory.fetchById(album.id);
+          })
+        );
+      })
+      .catch($log.error);
+    }
 
   AlbumFactory.fetchById = function (id) {
     return $http.get('/api/albums/' + id)

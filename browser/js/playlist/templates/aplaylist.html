@@ -1,0 +1,49 @@
+<div>
+  <h3>{{ playlist.name }}</h3>
+  <form name="addToPlaylist" class="form-horizontal">
+    <fieldset>
+      <legend>Add to Playlist</legend>
+      <div class="form-group">
+        <label class="col-xs-2 control-label">Song</label>
+        <div class="col-xs-10">
+          <div ng-show="" class="alert alert-warning">Please enter a name</div>
+          <div ng-show="">Please enter a name no longer than 16 characters</div>
+          <select name="songField" required ng-model="name" class="form-control" type="text" ng-options="song.name for song in songs"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-10 col-xs-offset-2">
+          <button ng-disabled="addToPlaylist.$invalid" type="submit" class="btn btn-success" ng-click=" addSong(addToPlaylist.songField.$viewValue.id, playlist.id); name=''">Add Song</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <table class='table' ng-show="playlist.songs.length">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Artists</th>
+        <th>Genres</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="song in playlist.songs" ng-class="{active: song === getCurrentSong() }">
+        <td>
+          <button class="btn btn-default btn-xs" ng-click="toggle(song)">
+            <span class="glyphicon" ng-class="{ 'glyphicon-pause': isPlaying(song), 'glyphicon-play': !isPlaying(song) }"></span>
+          </button>
+        </td>
+        <td>{{ song.name }}</td>
+        <td><span ng-repeat="artist in song.artists">{{ artist.name }}{{ $last ? '' : ', ' }}</span></td>
+        <td>{{ song.genres.join(', ') }}</td>
+        <td>
+          <button class="btn btn-default btn-xs" ng-click=" deleteSong(song.id, playlist.id); test(playlist.songs);">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button></td>
+      </tr>
+    </tbody>
+  </table>
+  <small ng-hide="playlist.songs.length">No songs.</small>
+  <hr>
+</div>
